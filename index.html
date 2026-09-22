@@ -186,7 +186,7 @@
         /* شبكة المواد */
         .subjects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
             gap: 14px;
         }
 
@@ -229,24 +229,23 @@
             font-weight: 700;
         }
 
-        /* حقل التاريخ بالإنجليزية بدون تشويه */
-        .english-date-input {
+        /* حقل نصي إنجليزي غير محدد بقوالب المتصفح العجيبة */
+        .custom-english-date {
             width: 100%;
-            padding: 8px;
+            padding: 8px 10px;
             border: 1.5px solid var(--lavender-main);
             border-radius: 8px;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             color: var(--text-dark);
             background: var(--lavender-bg);
             outline: none;
-            cursor: pointer;
-            font-weight: 600;
             direction: ltr !important;
             text-align: center;
             font-family: Arial, sans-serif;
+            font-weight: 600;
         }
 
-        .english-date-input:focus {
+        .custom-english-date:focus {
             border-color: var(--purple-accent);
             background: var(--white);
         }
@@ -370,7 +369,7 @@
     </div>
 
     <script>
-        const STORAGE_KEY = "hafsa_study_planner_v3";
+        const LOCAL_KEY = "hafsa_perfect_study_planner_v10";
 
         // المواد الافتراضية
         const defaultSubjects = [
@@ -386,34 +385,34 @@
         let totalSeconds = 25 * 60;
         let isRunning = false;
 
-        // عند تحميل الصفحة
-        window.onload = function() {
+        // عند فتح الويب سايت
+        window.addEventListener('DOMContentLoaded', () => {
             loadSavedData();
             renderSubjects();
             handleTimerInputChange();
-        };
+        });
 
-        // استرجاع البيانات المضمونة من ذاكرة المتصفح
+        // قراءة البيانات المضمونة
         function loadSavedData() {
-            const saved = localStorage.getItem(STORAGE_KEY);
-            if (saved) {
+            const saved = localStorage.getItem(LOCAL_KEY);
+            if (saved !== null && saved !== undefined) {
                 try {
                     subjects = JSON.parse(saved);
                 } catch(e) {
-                    subjects = [...defaultSubjects];
+                    subjects = JSON.parse(JSON.stringify(defaultSubjects));
                 }
             } else {
-                subjects = [...defaultSubjects];
+                subjects = JSON.parse(JSON.stringify(defaultSubjects));
                 saveData();
             }
         }
 
-        // حفظ مباشر ومضمون
+        // الحفظ الفوري المباشر
         function saveData() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(subjects));
+            localStorage.setItem(LOCAL_KEY, JSON.stringify(subjects));
         }
 
-        // عرض شبكة المواد
+        // رندر شبكة المواد
         function renderSubjects() {
             const grid = document.getElementById("subjectsGrid");
             grid.innerHTML = "";
@@ -427,20 +426,24 @@
                         <button class="delete-btn" onclick="deleteSubject(${subject.id})" title="حذف المادة"><i class="fa-solid fa-trash-can"></i></button>
                     </div>
                     <div class="date-picker-group">
-                        <label>التاريخ (Date):</label>
-                        <input type="date" lang="en" class="english-date-input" value="${subject.date || ''}" onchange="updateSubjectDate(${subject.id}, this.value)">
+                        <label style="direction: ltr; text-align: right;">Date:</label>
+                        <input type="text" 
+                               class="custom-english-date" 
+                               placeholder="e.g. 25/10/2026" 
+                               value="${subject.date || ''}" 
+                               oninput="updateSubjectDate(${subject.id}, this.value)">
                     </div>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        // تحديث التاريخ وحفظه فوراً
+        // حفظ التغييرات مع كل كبسة زر أو حرف يتكتب
         function updateSubjectDate(id, newDate) {
             const sub = subjects.find(s => s.id === id);
             if (sub) {
                 sub.date = newDate;
-                saveData();
+                saveData(); // حفظ لحظي في ذاكرة الجهاز
             }
         }
 
@@ -474,7 +477,7 @@
             }
         }
 
-        // التحكم بالمؤقت
+        // المؤقت
         function handleTimerInputChange() {
             if (isRunning) {
                 pauseTimer();
