@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <!-- أيقونات Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- مكتبة الاحتفال Confetti -->
+    <!-- مكتبة احتفال Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
@@ -183,7 +183,7 @@
             border-radius: 14px;
         }
 
-        /* المواد الدراسية */
+        /* شبكة المواد */
         .subjects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -220,28 +220,32 @@
         .date-picker-group {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
         }
 
         .date-picker-group label {
-            font-size: 0.78rem;
-            color: var(--text-muted);
-            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--purple-dark);
+            font-weight: 700;
         }
 
-        /* حل نهائي لمشكلة الكلمة المعكوسة ومنع التشويه */
-        .date-input-fix {
+        /* حقل تاريخ مخصص بدون حروف مقلوبة */
+        .clean-date-input {
             width: 100%;
-            padding: 8px 10px;
+            padding: 8px;
             border: 1.5px solid var(--lavender-main);
             border-radius: 8px;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: var(--text-dark);
             background: var(--lavender-bg);
             outline: none;
-            direction: ltr; /* يمنع عكس النص نهائياً */
-            text-align: center;
-            font-family: system-ui, -apple-system, sans-serif;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .clean-date-input:focus {
+            border-color: var(--purple-accent);
+            background: var(--white);
         }
 
         .fab {
@@ -307,7 +311,7 @@
 
     <div class="main-container">
         
-        <!-- المؤقت -->
+        <!-- قسم المؤقت -->
         <div class="card timer-section">
             <div class="card-title"><i class="fa-solid fa-stopwatch"></i> مؤقت التركيز (Pomodoro)</div>
             
@@ -337,7 +341,7 @@
             </div>
         </div>
 
-        <!-- المواد -->
+        <!-- قسم المواد الدراسية والمواعيد -->
         <div class="card">
             <div class="card-title"><i class="fa-solid fa-book-open"></i> مواد الدراسة والمواعيد</div>
             <div class="subjects-grid" id="subjectsGrid"></div>
@@ -345,10 +349,12 @@
 
     </div>
 
+    <!-- زر إضافة مادة جديد -->
     <button class="fab" onclick="openAddSubjectModal()" title="إضافة مادة جديدة">
         <i class="fa-solid fa-plus"></i>
     </button>
 
+    <!-- نافذة إضافة مادة -->
     <div class="modal" id="subjectModal">
         <div class="modal-content">
             <h3>إضافة مادة دراسية جديدة</h3>
@@ -375,15 +381,16 @@
         let totalSeconds = 25 * 60;
         let isRunning = false;
 
-        // عند فتح الموقع: استرجاع البيانات المضمونة تلقائياً
+        // عند فتح الصفحة: استرجاع البيانات المحفوظة تلقائياً
         window.onload = function() {
             loadSavedData();
             renderSubjects();
             handleTimerInputChange();
         };
 
+        // استرجاع البيانات المضمونة من ذاكرة المتصفح
         function loadSavedData() {
-            const saved = localStorage.getItem("my_study_planner_data_v2");
+            const saved = localStorage.getItem("hafsa_planner_final_data");
             if (saved) {
                 try {
                     subjects = JSON.parse(saved);
@@ -396,11 +403,12 @@
             }
         }
 
-        // حفظ مباشر في ذاكرة الجهاز المحلية
+        // حفظ مباشر ومؤكد
         function saveData() {
-            localStorage.setItem("my_study_planner_data_v2", JSON.stringify(subjects));
+            localStorage.setItem("hafsa_planner_final_data", JSON.stringify(subjects));
         }
 
+        // عرض شبكة المواد
         function renderSubjects() {
             const grid = document.getElementById("subjectsGrid");
             grid.innerHTML = "";
@@ -414,19 +422,20 @@
                         <button class="delete-btn" onclick="deleteSubject(${subject.id})" title="حذف المادة"><i class="fa-solid fa-trash-can"></i></button>
                     </div>
                     <div class="date-picker-group">
-                        <label>تاريخ الامتحان / المراجعة:</label>
-                        <input type="date" class="date-input-fix" value="${subject.date || ''}" onchange="updateSubjectDate(${subject.id}, this.value)" oninput="updateSubjectDate(${subject.id}, this.value)">
+                        <label>التاريخ:</label>
+                        <input type="date" class="clean-date-input" value="${subject.date || ''}" onchange="updateSubjectDate(${subject.id}, this.value)">
                     </div>
                 `;
                 grid.appendChild(card);
             });
         }
 
+        // تحديث التاريخ وحفظه فوراً
         function updateSubjectDate(id, newDate) {
             const sub = subjects.find(s => s.id === id);
             if (sub) {
                 sub.date = newDate;
-                saveData(); // حفظ البيانات لحظياً
+                saveData(); // حفظ لحظي فور الاختيار
             }
         }
 
@@ -460,7 +469,7 @@
             }
         }
 
-        // المؤقت وتعديل الأرقام لحظياً
+        // التحكم بالمؤقت
         function handleTimerInputChange() {
             if (isRunning) {
                 pauseTimer();
