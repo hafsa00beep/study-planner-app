@@ -3,49 +3,600 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منظم المذاكرة والمهام الاحترافي</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>منظم المذاكرة - Study Planner</title>
+    <!-- خطوط جوجل العربية الفخمة -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@500;700&display=swap" rel="stylesheet">
+    <!-- مكتبة الأيقونات Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- مكتبة تأثير الاحتفال والبريق Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --lavender-light: #f3effa;
+            --lavender-card: #e9e0f7;
+            --lavender-main: #d8c7f3;
+            --purple-accent: #8b5cf6;
+            --purple-dark: #6d28d9;
+            --purple-deep: #4c1d95;
+            --white: #ffffff;
+            --text-dark: #374151;
+            --text-muted: #6b7280;
+            --shadow-soft: 0 10px 25px -5px rgba(139, 92, 246, 0.15);
+            --shadow-hover: 0 20px 30px -10px rgba(139, 92, 246, 0.25);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            transition: all 0.25s ease-in-out;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8f6fc 0%, #ede7f8 100%);
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding: 30px 15px 100px 15px;
+            position: relative;
+        }
+
+        /* الهيدر والعنوان */
+        header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        header h1 {
+            color: var(--purple-deep);
+            font-size: 2.3rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        header p {
+            color: var(--purple-dark);
+            font-size: 1.05rem;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        .main-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        @media (min-width: 850px) {
+            .main-container {
+                grid-template-columns: 360px 1fr;
+            }
+        }
+
+        /* كروت التصميم */
+        .card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--lavender-main);
+            border-radius: 24px;
+            padding: 25px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-title {
+            color: var(--purple-dark);
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px dashed var(--lavender-main);
+            padding-bottom: 10px;
+        }
+
+        /* قسم المؤقت */
+        .timer-section {
+            text-align: center;
+        }
+
+        .timer-display {
+            background: linear-gradient(135deg, var(--purple-accent), var(--purple-dark));
+            color: var(--white);
+            font-size: 3.2rem;
+            font-weight: 800;
+            padding: 20px;
+            border-radius: 20px;
+            margin: 15px 0;
+            letter-spacing: 2px;
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+
+        .timer-inputs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .timer-inputs input {
+            width: 75px;
+            padding: 8px;
+            border: 2px solid var(--lavender-main);
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--purple-deep);
+            outline: none;
+        }
+
+        .timer-inputs input:focus {
+            border-color: var(--purple-accent);
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 10px 22px;
+            border: none;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--purple-accent);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--purple-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--lavender-card);
+            color: var(--purple-deep);
+        }
+
+        .btn-secondary:hover {
+            background: var(--lavender-main);
+        }
+
+        /* رسالة التهنئة بعد انتهاء الوقت */
+        .congrats-box {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, #7c3aed, #4c1d95);
+            color: var(--white);
+            border-radius: 18px;
+            animation: popIn 0.5s ease-out;
+            box-shadow: 0 10px 25px rgba(124, 58, 237, 0.4);
+        }
+
+        .congrats-box h3 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+            color: var(--white);
+        }
+
+        .congrats-box p {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #f3e8ff;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* شبكة المواد الدراسية */
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        .subject-card {
+            background: var(--white);
+            border: 2px solid var(--lavender-card);
+            border-radius: 18px;
+            padding: 16px;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        .subject-card:hover {
+            border-color: var(--purple-accent);
+            transform: translateY(-3px);
+        }
+
+        .subject-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .subject-name {
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--purple-deep);
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            opacity: 0.6;
+            font-size: 0.9rem;
+        }
+
+        .delete-btn:hover {
+            opacity: 1;
+        }
+
+        .date-picker-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .date-picker-group label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .date-picker-group input[type="date"] {
+            padding: 8px 10px;
+            border: 1.5px solid var(--lavender-main);
+            border-radius: 10px;
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            background: var(--lavender-light);
+            outline: none;
+        }
+
+        .date-picker-group input[type="date"]:focus {
+            border-color: var(--purple-accent);
+            background: var(--white);
+        }
+
+        /* الأزرار العائمة */
+        .floating-container {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .fab {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple-accent), var(--purple-dark));
+            color: var(--white);
+            border: none;
+            font-size: 1.4rem;
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .fab:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 12px 25px rgba(139, 92, 246, 0.6);
+        }
+
+        /* نافذة الملاحظات والسؤال التفاعلي */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            border: 2px solid var(--lavender-main);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .modal-content h3 {
+            color: var(--purple-deep);
+            margin-bottom: 15px;
+        }
+
+        .modal-content input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--lavender-main);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+    </style>
 </head>
 <body>
-    <div class="background-glow"></div>
-    <div class="app-container">
-        <header class="app-header">
-            <h1><i class="fa-solid fa-graduation-cap"></i> منظم المذاكرة الذكي</h1>
-            <p>نظّم وقتك، حقق أهدافك، وتابع إنجازاتك اليومية بسلاسة</p>
-        </header>
 
-        <main class="dashboard">
-            <section class="card timer-card">
-                <h2><i class="fa-solid fa-stopwatch"></i> مؤقت التركيز (Pomodoro)</h2>
-                <div class="timer-display" id="timer">25:00</div>
-                <div class="timer-controls">
-                    <button class="btn btn-primary" onclick="startTimer()">بدء التركيز</button>
-                    <button class="btn btn-secondary" onclick="resetTimer()">إعادة ضبط</button>
+    <header>
+        <h1><i class="fa-solid fa-graduation-cap"></i> منظم المذاكرة والمهام</h1>
+        <p>نظّم وقتك بهدوء ولطافة واصنع إنجازك اليومي 💜</p>
+    </header>
+
+    <div class="main-container">
+        
+        <!-- قسم المؤقت الذكي -->
+        <div class="card timer-section">
+            <div class="card-title"><i class="fa-solid fa-stopwatch"></i> مؤقت التركيز (Pomodoro)</div>
+            
+            <div class="timer-inputs">
+                <div>
+                    <input type="number" id="inputMinutes" min="0" max="180" value="25">
+                    <span style="font-size:0.8rem; display:block; color:var(--text-muted); margin-top:3px;">دقيقة</span>
                 </div>
-            </section>
+                <div style="font-size: 1.5rem; font-weight:bold; color:var(--purple-accent);">:</div>
+                <div>
+                    <input type="number" id="inputSeconds" min="0" max="59" value="00">
+                    <span style="font-size:0.8rem; display:block; color:var(--text-muted); margin-top:3px;">ثانية</span>
+                </div>
+            </div>
 
-            <section class="card tasks-card">
-                <h2><i class="fa-solid fa-list-check"></i> قائمة المهام اليومية</h2>
-                <ul class="task-list" id="taskList">
-                    <li class="task-item completed">
-                        <span>مراجعة الفصل الأول رياضيات</span>
-                        <i class="fa-solid fa-circle-check"></i>
-                    </li>
-                    <li class="task-item">
-                        <span>حل تمارين برمجة Python</span>
-                        <i class="fa-regular fa-circle"></i>
-                    </li>
-                </ul>
-            </section>
-        </main>
+            <div class="timer-display" id="timerDisplay">25:00</div>
+
+            <div class="timer-controls">
+                <button class="btn btn-primary" onclick="startTimer()"><i class="fa-solid fa-play"></i> بدء</button>
+                <button class="btn btn-secondary" onclick="pauseTimer()"><i class="fa-solid fa-pause"></i> إيقاف</button>
+                <button class="btn btn-secondary" onclick="resetTimer()"><i class="fa-solid fa-rotate-left"></i> إعادة</button>
+            </div>
+
+            <!-- الرسالة المبهجة والبريق -->
+            <div class="congrats-box" id="congratsBox">
+                <h3>أحسنت يا بطل! 🌟</h3>
+                <p>صانعة الموقع حفصة فخورة بك 💜</p>
+            </div>
+        </div>
+
+        <!-- قسم المواد الدراسية -->
+        <div class="card">
+            <div class="card-title"><i class="fa-solid fa-book-open"></i> مواد الدراسة والمواعيد</div>
+            <div class="subjects-grid" id="subjectsGrid">
+                <!-- سيتم تحميل المواد ديناميكياً بواسطة JavaScript -->
+            </div>
+        </div>
+
     </div>
 
-    <!-- زر عائم لإضافة مهمة جديدة -->
-    <button class="fab-btn" onclick="addNewTask()" title="إضافة مهمة جديدة">
-        <i class="fa-solid fa-plus"></i>
-    </button>
+    <!-- الأزرار العائمة -->
+    <div class="floating-container">
+        <button class="fab" onclick="openAddSubjectModal()" title="إضافة مادة جديدة">
+            <i class="fa-solid fa-plus"></i>
+        </button>
+    </div>
 
-    <script src="script.js"></script>
+    <!-- Modal لإضافة مادة جديده -->
+    <div class="modal" id="subjectModal">
+        <div class="modal-content">
+            <h3>إضافة مادة دراسية جديدة</h3>
+            <input type="text" id="newSubjectName" placeholder="أدخل اسم المادة...">
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeAddSubjectModal()">إلغاء</button>
+                <button class="btn btn-primary" onclick="addNewSubject()">إضافة</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // المواد الأساسية التلقائية
+        const defaultSubjects = [
+            { id: 1, name: "الرياضيات", date: "" },
+            { id: 2, name: "العلوم", date: "" },
+            { id: 3, name: "اللغة الإنجليزية", date: "" },
+            { id: 4, name: "اللغة العربية", date: "" },
+            { id: 5, name: "الدراسات الاجتماعية", date: "" }
+        ];
+
+        let subjects = [];
+        let timerInterval = null;
+        let totalSeconds = 25 * 60;
+        let isRunning = false;
+
+        // تحميل البيانات المحفوظة عند فتح الموقع
+        window.onload = function() {
+            const savedSubjects = localStorage.getItem("hafsa_study_planner_subjects");
+            if (savedSubjects) {
+                subjects = JSON.parse(savedSubjects);
+            } else {
+                subjects = defaultSubjects;
+                saveSubjects();
+            }
+            renderSubjects();
+        };
+
+        // حفظ المواد في LocalStorage
+        function saveSubjects() {
+            localStorage.setItem("hafsa_study_planner_subjects", JSON.stringify(subjects));
+        }
+
+        // عرض المواد على الشاشة
+        function renderSubjects() {
+            const grid = document.getElementById("subjectsGrid");
+            grid.innerHTML = "";
+
+            subjects.forEach(subject => {
+                const card = document.createElement("div");
+                card.className = "subject-card";
+                card.innerHTML = `
+                    <div class="subject-header">
+                        <span class="subject-name">${subject.name}</span>
+                        <button class="delete-btn" onclick="deleteSubject(${subject.id})" title="حذف المادة"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                    <div class="date-picker-group">
+                        <label>تاريخ الامتحان / المراجعة:</label>
+                        <input type="date" value="${subject.date || ''}" onchange="updateSubjectDate(${subject.id}, this.value)">
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // تحديث تاريخ المادة وحفظه
+        function updateSubjectDate(id, newDate) {
+            const sub = subjects.find(s => s.id === id);
+            if (sub) {
+                sub.date = newDate;
+                saveSubjects();
+            }
+        }
+
+        // إضافة مادة جديدة
+        function openAddSubjectModal() {
+            document.getElementById("subjectModal").style.display = "flex";
+            document.getElementById("newSubjectName").focus();
+        }
+
+        function closeAddSubjectModal() {
+            document.getElementById("subjectModal").style.display = "none";
+            document.getElementById("newSubjectName").value = "";
+        }
+
+        function addNewSubject() {
+            const nameInput = document.getElementById("newSubjectName");
+            const name = nameInput.value.trim();
+            if (name) {
+                const newSubject = {
+                    id: Date.now(),
+                    name: name,
+                    date: ""
+                };
+                subjects.push(newSubject);
+                saveSubjects();
+                renderSubjects();
+                closeAddSubjectModal();
+            }
+        }
+
+        // حذف مادة
+        function deleteSubject(id) {
+            if (confirm("هل أنتِ متأكدة من حذف هذه المادة؟")) {
+                subjects = subjects.filter(s => s.id !== id);
+                saveSubjects();
+                renderSubjects();
+            }
+        }
+
+        // إعدادات المؤقت
+        function updateTimerDisplay() {
+            const m = Math.floor(totalSeconds / 60);
+            const s = totalSeconds % 60;
+            document.getElementById("timerDisplay").textContent = 
+                `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        function startTimer() {
+            if (isRunning) return;
+
+            const mInput = parseInt(document.getElementById("inputMinutes").value) || 0;
+            const sInput = parseInt(document.getElementById("inputSeconds").value) || 0;
+            
+            if (!timerInterval && totalSeconds === 25 * 60) {
+                totalSeconds = (mInput * 60) + sInput;
+            }
+
+            if (totalSeconds <= 0) return;
+
+            document.getElementById("congratsBox").style.display = "none";
+            isRunning = true;
+
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                updateTimerDisplay();
+
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                    isRunning = false;
+                    triggerCompletion();
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            isRunning = false;
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            const mInput = parseInt(document.getElementById("inputMinutes").value) || 25;
+            const sInput = parseInt(document.getElementById("inputSeconds").value) || 0;
+            totalSeconds = (mInput * 60) + sInput;
+            updateTimerDisplay();
+            document.getElementById("congratsBox").style.display = "none";
+        }
+
+        // التأثيرات والبريق عند الانتهاء
+        function triggerCompletion() {
+            document.getElementById("congratsBox").style.display = "block";
+            
+            // بريق ونجوم متساقطة بألوان اللافندر والذهبي
+            confetti({
+                particleCount: 120,
+                spread: 80,
+                origin: { y: 0.6 },
+                colors: ['#8b5cf6', '#d8c7f3', '#fef08a', '#ffffff']
+            });
+        }
+    </script>
 </body>
 </html>
