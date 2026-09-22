@@ -3,29 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منظم المذاكرة - Study Planner</title>
-    <style>
-        body { font-family: Tahoma, sans-serif; background: #f3f4f6; margin: 0; padding: 20px; text-align: center; }
-        .container { max-width: 500px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        h2 { color: #4f46e5; }
-        input { width: 70%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; outline: none; }
-        button { padding: 10px 15px; background: #4f46e5; color: white; border: none; border-radius: 5px; cursor: pointer; }
-        ul { list-style-type: none; padding: 0; margin-top: 20px; }
-        li { background: #e0e7ff; margin: 10px 0; padding: 10px; border-radius: 5px; text-align: right; }
-    </style>
+    <title>منظم المذاكرة والمهام الاحترافي</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h2>📅 منظم المذاكرة اليومي</h2>
-        <p>أضف مهامك الدراسية هنا</p>
-        <div>
-            <input type="text" placeholder="مثال: مراجعة درس البايثون...">
-            <button>إضافة</button>
-        </div>
-        <ul>
-            <li>✅ تطبيق على كود HTML & CSS</li>
-            <li>⏳ المذاكرة لمدة ساعة</li>
-        </ul>
+    <div class="background-glow"></div>
+    <div class="app-container">
+        <header class="app-header">
+            <h1><i class="fa-solid fa-graduation-cap"></i> منظم المذاكرة الذكي</h1>
+            <p>نظّم وقتك، حقق أهدافك، وتابع إنجازاتك اليومية بسلاسة</p>
+        </header>
+
+        <main class="dashboard">
+            <section class="card timer-card">
+                <h2><i class="fa-solid fa-stopwatch"></i> مؤقت التركيز (Pomodoro)</h2>
+                <div class="timer-display" id="timer">25:00</div>
+                <div class="timer-controls">
+                    <button class="btn btn-primary" onclick="startTimer()">بدء التركيز</button>
+                    <button class="btn btn-secondary" onclick="resetTimer()">إعادة ضبط</button>
+                </div>
+            </section>
+
+            <section class="card tasks-card">
+                <h2><i class="fa-solid fa-list-check"></i> قائمة المهام اليومية</h2>
+                <ul class="task-list" id="taskList">
+                    <li class="task-item completed">
+                        <span>مراجعة الفصل الأول رياضيات</span>
+                        <i class="fa-solid fa-circle-check"></i>
+                    </li>
+                    <li class="task-item">
+                        <span>حل تمارين برمجة Python</span>
+                        <i class="fa-regular fa-circle"></i>
+                    </li>
+                </ul>
+            </section>
+        </main>
     </div>
+
+    <!-- زر عائم لإضافة مهمة جديدة -->
+    <button class="fab-btn" onclick="addNewTask()" title="إضافة مهمة جديدة">
+        <i class="fa-solid fa-plus"></i>
+    </button>
+
+    <script src="script.js"></script>
 </body>
 </html>
