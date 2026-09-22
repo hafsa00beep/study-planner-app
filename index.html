@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <!-- مكتبة الأيقونات Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- مكتبة التأثيرات والبريق Canvas Confetti -->
+    <!-- مكتبة الاحتفال Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
@@ -38,66 +38,63 @@
             background: linear-gradient(135deg, #f8f6fc 0%, #ede7f8 100%);
             color: var(--text-dark);
             min-height: 100vh;
-            padding: 50px 20px 100px 20px;
+            padding: 40px 15px 80px 15px;
         }
 
-        /* ضبط الهيدر العلوي بشكل كامل */
         header {
             text-align: center;
-            margin-bottom: 35px;
+            margin-bottom: 25px;
             width: 100%;
-            display: block;
         }
 
         header h1 {
             color: var(--purple-deep);
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: 800;
-            margin-bottom: 8px;
-            line-height: 1.3;
+            margin-bottom: 5px;
         }
 
         header p {
             color: var(--purple-dark);
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             font-weight: 600;
         }
 
         .main-container {
-            max-width: 1100px;
+            max-width: 1050px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: 1fr;
-            gap: 25px;
+            gap: 20px;
         }
 
         @media (min-width: 850px) {
             .main-container {
-                grid-template-columns: 350px 1fr;
+                grid-template-columns: 320px 1fr;
             }
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.95);
             border: 2px solid var(--lavender-main);
-            border-radius: 20px;
-            padding: 24px;
-            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.08);
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.06);
         }
 
         .card-title {
             color: var(--purple-dark);
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             font-weight: 700;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             border-bottom: 2px dashed var(--lavender-main);
-            padding-bottom: 10px;
+            padding-bottom: 8px;
         }
 
-        /* قسم المؤقت */
+        /* المؤقت */
         .timer-section {
             text-align: center;
         }
@@ -106,8 +103,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
+            gap: 10px;
+            margin-bottom: 12px;
+            direction: ltr;
         }
 
         .input-group {
@@ -117,57 +115,53 @@
         }
 
         .input-group label {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 700;
             color: var(--purple-dark);
-            margin-top: 5px;
+            margin-top: 4px;
         }
 
         .timer-inputs-wrapper input {
-            width: 70px;
-            height: 48px;
+            width: 65px;
+            height: 44px;
             border: 2px solid var(--lavender-main);
-            border-radius: 12px;
+            border-radius: 10px;
             text-align: center;
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: var(--purple-deep);
             outline: none;
             background: var(--white);
         }
 
-        .timer-inputs-wrapper input:focus {
-            border-color: var(--purple-accent);
-        }
-
         .timer-display {
             background: linear-gradient(135deg, var(--purple-accent), var(--purple-dark));
             color: var(--white);
-            font-size: 3.5rem;
+            font-size: 3.2rem;
             font-weight: 800;
-            padding: 15px;
-            border-radius: 18px;
-            margin: 15px 0;
+            padding: 12px;
+            border-radius: 16px;
+            margin: 12px 0;
             letter-spacing: 2px;
             direction: ltr;
         }
 
         .timer-controls {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             justify-content: center;
         }
 
         .btn {
-            padding: 10px 20px;
+            padding: 8px 16px;
             border: none;
-            border-radius: 12px;
-            font-size: 0.95rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
             font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
         }
 
         .btn-primary {
@@ -175,71 +169,44 @@
             color: var(--white);
         }
 
-        .btn-primary:hover {
-            background: var(--purple-dark);
-        }
-
         .btn-secondary {
             background: var(--lavender-card);
             color: var(--purple-deep);
         }
 
-        .btn-secondary:hover {
-            background: var(--lavender-main);
-        }
-
         .congrats-box {
             display: none;
-            margin-top: 18px;
-            padding: 18px;
+            margin-top: 15px;
+            padding: 15px;
             background: linear-gradient(135deg, #7c3aed, #4c1d95);
             color: var(--white);
-            border-radius: 16px;
-            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
+            border-radius: 14px;
         }
 
-        .congrats-box h3 {
-            font-size: 1.5rem;
-            color: var(--white);
-            font-weight: 800;
-            margin-bottom: 4px;
-        }
-
-        .congrats-box p {
-            font-size: 0.95rem;
-            color: #f3e8ff;
-            font-weight: 600;
-        }
-
-        /* شبكة المواد وإصلاح خطوط التاريخ */
+        /* شبكة المواد وإصلاح خطوط التاريخ والمعكوسات */
         .subjects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 14px;
         }
 
         .subject-card {
             background: var(--white);
             border: 1.5px solid var(--lavender-card);
-            border-radius: 16px;
-            padding: 16px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
-        }
-
-        .subject-card:hover {
-            border-color: var(--purple-accent);
+            border-radius: 14px;
+            padding: 14px;
         }
 
         .subject-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .subject-name {
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             color: var(--purple-deep);
         }
 
@@ -248,56 +215,47 @@
             border: none;
             color: #ef4444;
             cursor: pointer;
-            font-size: 0.95rem;
-            opacity: 0.7;
-        }
-
-        .delete-btn:hover {
-            opacity: 1;
         }
 
         .date-picker-group {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
         }
 
         .date-picker-group label {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: var(--text-muted);
             font-weight: 600;
         }
 
-        /* إصلاح حقل الإدخال للتاريخ تماماً */
-        .date-picker-group input[type="date"] {
-            padding: 9px 12px;
+        /* حل مشكلة الحروف المعكوسة تماماً عبر تعيين اتجاه التاريخ وسياقه */
+        .custom-date-input {
+            width: 100%;
+            padding: 8px 10px;
             border: 1.5px solid var(--lavender-main);
-            border-radius: 10px;
-            font-size: 0.9rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
             color: var(--text-dark);
             background: var(--lavender-bg);
             outline: none;
-            font-family: system-ui, -apple-system, sans-serif; /* منع تشوه رموز التاريخ */
+            direction: ltr !important;
+            text-align: right;
+            font-family: 'Cairo', sans-serif;
         }
 
-        .date-picker-group input[type="date"]:focus {
-            border-color: var(--purple-accent);
-            background: var(--white);
-        }
-
-        /* الزر العائم */
         .fab {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 58px;
-            height: 58px;
+            bottom: 25px;
+            right: 25px;
+            width: 52px;
+            height: 52px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--purple-accent), var(--purple-dark));
             color: var(--white);
             border: none;
-            font-size: 1.4rem;
-            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
+            font-size: 1.3rem;
+            box-shadow: 0 6px 16px rgba(139, 92, 246, 0.35);
             cursor: pointer;
             display: flex;
             justify-content: center;
@@ -305,16 +263,12 @@
             z-index: 100;
         }
 
-        .fab:hover {
-            transform: scale(1.08);
-        }
-
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(3px);
             justify-content: center;
             align-items: center;
             z-index: 1000;
@@ -322,23 +276,18 @@
 
         .modal-content {
             background: var(--white);
-            padding: 24px;
-            border-radius: 20px;
+            padding: 20px;
+            border-radius: 16px;
             width: 90%;
-            max-width: 380px;
-        }
-
-        .modal-content h3 {
-            color: var(--purple-deep);
-            margin-bottom: 12px;
+            max-width: 360px;
         }
 
         .modal-content input[type="text"] {
             width: 100%;
             padding: 10px;
             border: 2px solid var(--lavender-main);
-            border-radius: 10px;
-            margin-bottom: 15px;
+            border-radius: 8px;
+            margin: 12px 0;
             outline: none;
         }
 
@@ -358,18 +307,17 @@
 
     <div class="main-container">
         
-        <!-- المؤقت -->
         <div class="card timer-section">
             <div class="card-title"><i class="fa-solid fa-stopwatch"></i> مؤقت التركيز (Pomodoro)</div>
             
             <div class="timer-inputs-wrapper">
                 <div class="input-group">
-                    <input type="number" id="inputMinutes" min="0" max="180" value="25" onchange="updateTimerFromInputs()">
+                    <input type="number" id="inputMinutes" min="0" max="180" value="25" oninput="handleInputChange()">
                     <label>دقيقة</label>
                 </div>
                 <span style="font-size: 1.4rem; font-weight:bold; color:var(--purple-accent);">:</span>
                 <div class="input-group">
-                    <input type="number" id="inputSeconds" min="0" max="59" value="0" onchange="updateTimerFromInputs()">
+                    <input type="number" id="inputSeconds" min="0" max="59" value="0" oninput="handleInputChange()">
                     <label>ثانية</label>
                 </div>
             </div>
@@ -388,7 +336,6 @@
             </div>
         </div>
 
-        <!-- المواد -->
         <div class="card">
             <div class="card-title"><i class="fa-solid fa-book-open"></i> مواد الدراسة والمواعيد</div>
             <div class="subjects-grid" id="subjectsGrid"></div>
@@ -396,7 +343,6 @@
 
     </div>
 
-    <!-- الزر العائم -->
     <button class="fab" onclick="openAddSubjectModal()" title="إضافة مادة جديدة">
         <i class="fa-solid fa-plus"></i>
     </button>
@@ -426,7 +372,7 @@
         let totalSeconds = 25 * 60;
         let isRunning = false;
 
-        // تحميل البيانات المحفوظة فور فتح الموقع
+        // تحميل البيانات المحفوظة فور فتح الصفحة
         window.onload = function() {
             const savedSubjects = localStorage.getItem("hafsa_study_planner_subjects");
             if (savedSubjects) {
@@ -436,7 +382,7 @@
                 saveSubjects();
             }
             renderSubjects();
-            updateTimerFromInputs();
+            resetTimer();
         };
 
         function saveSubjects() {
@@ -457,7 +403,7 @@
                     </div>
                     <div class="date-picker-group">
                         <label>تاريخ الامتحان / المراجعة:</label>
-                        <input type="date" value="${subject.date || ''}" onchange="updateSubjectDate(${subject.id}, this.value)">
+                        <input type="date" class="custom-date-input" value="${subject.date || ''}" onchange="updateSubjectDate(${subject.id}, this.value)">
                     </div>
                 `;
                 grid.appendChild(card);
@@ -468,7 +414,7 @@
             const sub = subjects.find(s => s.id === id);
             if (sub) {
                 sub.date = newDate;
-                saveSubjects(); // حفظ التعديل فورياً في ذاكرة المتصفح
+                saveSubjects(); // حفظ مباشر ومضمون في localStorage
             }
         }
 
@@ -502,12 +448,14 @@
             }
         }
 
-        // تحديث أرقام المؤقت من المدخلات مباشرة
-        function updateTimerFromInputs() {
-            if (isRunning) return;
-            const mInput = parseInt(document.getElementById("inputMinutes").value) || 0;
-            const sInput = parseInt(document.getElementById("inputSeconds").value) || 0;
-            totalSeconds = (mInput * 60) + sInput;
+        // الاستجابة الفورية لتغيير أرقام الدقائق أو الثواني
+        function handleInputChange() {
+            if (isRunning) {
+                pauseTimer(); // إيقاف العد تلقائياً إذا عدل المستخدم الرقم أثناء العمل
+            }
+            const m = parseInt(document.getElementById("inputMinutes").value) || 0;
+            const s = parseInt(document.getElementById("inputSeconds").value) || 0;
+            totalSeconds = (m * 60) + s;
             updateTimerDisplay();
         }
 
@@ -521,11 +469,14 @@
         function startTimer() {
             if (isRunning) return;
 
-            // أخذ القيم من المدخلات فور الدوس على بدء
-            const mInput = parseInt(document.getElementById("inputMinutes").value) || 0;
-            const sInput = parseInt(document.getElementById("inputSeconds").value) || 0;
+            // أخذ الأرقام المكتوبة حالياً في الخانات
+            const m = parseInt(document.getElementById("inputMinutes").value) || 0;
+            const s = parseInt(document.getElementById("inputSeconds").value) || 0;
             
-            totalSeconds = (mInput * 60) + sInput;
+            // تحديث القيمة إذا كان المؤقت متوقفاً أو انتهى
+            if (totalSeconds <= 0 || !timerInterval) {
+                totalSeconds = (m * 60) + s;
+            }
 
             if (totalSeconds <= 0) return;
 
@@ -553,7 +504,10 @@
 
         function resetTimer() {
             pauseTimer();
-            updateTimerFromInputs();
+            const m = parseInt(document.getElementById("inputMinutes").value) || 0;
+            const s = parseInt(document.getElementById("inputSeconds").value) || 0;
+            totalSeconds = (m * 60) + s;
+            updateTimerDisplay();
             document.getElementById("congratsBox").style.display = "none";
         }
 
