@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <!-- أيقونات Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- مكتبة احتفال Confetti -->
+    <!-- مكتبة الاحتفال Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
@@ -229,8 +229,8 @@
             font-weight: 700;
         }
 
-        /* حقل تاريخ مخصص بدون حروف مقلوبة */
-        .clean-date-input {
+        /* حقل التاريخ بالإنجليزية بدون تشويه */
+        .english-date-input {
             width: 100%;
             padding: 8px;
             border: 1.5px solid var(--lavender-main);
@@ -241,9 +241,12 @@
             outline: none;
             cursor: pointer;
             font-weight: 600;
+            direction: ltr !important;
+            text-align: center;
+            font-family: Arial, sans-serif;
         }
 
-        .clean-date-input:focus {
+        .english-date-input:focus {
             border-color: var(--purple-accent);
             background: var(--white);
         }
@@ -367,6 +370,8 @@
     </div>
 
     <script>
+        const STORAGE_KEY = "hafsa_study_planner_v3";
+
         // المواد الافتراضية
         const defaultSubjects = [
             { id: 1, name: "الرياضيات", date: "" },
@@ -381,7 +386,7 @@
         let totalSeconds = 25 * 60;
         let isRunning = false;
 
-        // عند فتح الصفحة: استرجاع البيانات المحفوظة تلقائياً
+        // عند تحميل الصفحة
         window.onload = function() {
             loadSavedData();
             renderSubjects();
@@ -390,22 +395,22 @@
 
         // استرجاع البيانات المضمونة من ذاكرة المتصفح
         function loadSavedData() {
-            const saved = localStorage.getItem("hafsa_planner_final_data");
+            const saved = localStorage.getItem(STORAGE_KEY);
             if (saved) {
                 try {
                     subjects = JSON.parse(saved);
                 } catch(e) {
-                    subjects = defaultSubjects;
+                    subjects = [...defaultSubjects];
                 }
             } else {
-                subjects = defaultSubjects;
+                subjects = [...defaultSubjects];
                 saveData();
             }
         }
 
-        // حفظ مباشر ومؤكد
+        // حفظ مباشر ومضمون
         function saveData() {
-            localStorage.setItem("hafsa_planner_final_data", JSON.stringify(subjects));
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(subjects));
         }
 
         // عرض شبكة المواد
@@ -422,8 +427,8 @@
                         <button class="delete-btn" onclick="deleteSubject(${subject.id})" title="حذف المادة"><i class="fa-solid fa-trash-can"></i></button>
                     </div>
                     <div class="date-picker-group">
-                        <label>التاريخ:</label>
-                        <input type="date" class="clean-date-input" value="${subject.date || ''}" onchange="updateSubjectDate(${subject.id}, this.value)">
+                        <label>التاريخ (Date):</label>
+                        <input type="date" lang="en" class="english-date-input" value="${subject.date || ''}" onchange="updateSubjectDate(${subject.id}, this.value)">
                     </div>
                 `;
                 grid.appendChild(card);
@@ -435,7 +440,7 @@
             const sub = subjects.find(s => s.id === id);
             if (sub) {
                 sub.date = newDate;
-                saveData(); // حفظ لحظي فور الاختيار
+                saveData();
             }
         }
 
