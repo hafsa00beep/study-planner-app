@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منظم المذاكرة - Study Planner</title>
-    <!-- خط القاهرة العربي الاحترافي -->
+    <!-- خط القاهرة -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <!-- مكتبة الأيقونات Font Awesome -->
+    <!-- أيقونات Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- مكتبة الاحتفال Canvas Confetti -->
+    <!-- مكتبة الاحتفال Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
@@ -38,7 +38,7 @@
             background: linear-gradient(135deg, #f8f6fc 0%, #ede7f8 100%);
             color: var(--text-dark);
             min-height: 100vh;
-            padding: 40px 15px 80px 15px;
+            padding: 30px 15px 80px 15px;
         }
 
         header {
@@ -183,7 +183,7 @@
             border-radius: 14px;
         }
 
-        /* شبكة المواد وإصلاح خطوط التاريخ والمعكوسات */
+        /* المواد الدراسية */
         .subjects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -229,8 +229,8 @@
             font-weight: 600;
         }
 
-        /* حل مشكلة الحروف المعكوسة تماماً عبر تعيين اتجاه التاريخ وسياقه */
-        .custom-date-input {
+        /* حل نهائي لمشكلة الكلمة المعكوسة ومنع التشويه */
+        .date-input-fix {
             width: 100%;
             padding: 8px 10px;
             border: 1.5px solid var(--lavender-main);
@@ -239,9 +239,9 @@
             color: var(--text-dark);
             background: var(--lavender-bg);
             outline: none;
-            direction: ltr !important;
-            text-align: right;
-            font-family: 'Cairo', sans-serif;
+            direction: ltr; /* يمنع عكس النص نهائياً */
+            text-align: center;
+            font-family: system-ui, -apple-system, sans-serif;
         }
 
         .fab {
@@ -307,17 +307,18 @@
 
     <div class="main-container">
         
+        <!-- المؤقت -->
         <div class="card timer-section">
             <div class="card-title"><i class="fa-solid fa-stopwatch"></i> مؤقت التركيز (Pomodoro)</div>
             
             <div class="timer-inputs-wrapper">
                 <div class="input-group">
-                    <input type="number" id="inputMinutes" min="0" max="180" value="25" oninput="handleInputChange()">
+                    <input type="number" id="inputMinutes" min="0" max="180" value="25" oninput="handleTimerInputChange()">
                     <label>دقيقة</label>
                 </div>
                 <span style="font-size: 1.4rem; font-weight:bold; color:var(--purple-accent);">:</span>
                 <div class="input-group">
-                    <input type="number" id="inputSeconds" min="0" max="59" value="0" oninput="handleInputChange()">
+                    <input type="number" id="inputSeconds" min="0" max="59" value="0" oninput="handleTimerInputChange()">
                     <label>ثانية</label>
                 </div>
             </div>
@@ -336,6 +337,7 @@
             </div>
         </div>
 
+        <!-- المواد -->
         <div class="card">
             <div class="card-title"><i class="fa-solid fa-book-open"></i> مواد الدراسة والمواعيد</div>
             <div class="subjects-grid" id="subjectsGrid"></div>
@@ -359,6 +361,7 @@
     </div>
 
     <script>
+        // المواد الافتراضية
         const defaultSubjects = [
             { id: 1, name: "الرياضيات", date: "" },
             { id: 2, name: "العلوم", date: "" },
@@ -372,21 +375,30 @@
         let totalSeconds = 25 * 60;
         let isRunning = false;
 
-        // تحميل البيانات المحفوظة فور فتح الصفحة
+        // عند فتح الموقع: استرجاع البيانات المضمونة تلقائياً
         window.onload = function() {
-            const savedSubjects = localStorage.getItem("hafsa_study_planner_subjects");
-            if (savedSubjects) {
-                subjects = JSON.parse(savedSubjects);
-            } else {
-                subjects = defaultSubjects;
-                saveSubjects();
-            }
+            loadSavedData();
             renderSubjects();
-            resetTimer();
+            handleTimerInputChange();
         };
 
-        function saveSubjects() {
-            localStorage.setItem("hafsa_study_planner_subjects", JSON.stringify(subjects));
+        function loadSavedData() {
+            const saved = localStorage.getItem("my_study_planner_data_v2");
+            if (saved) {
+                try {
+                    subjects = JSON.parse(saved);
+                } catch(e) {
+                    subjects = defaultSubjects;
+                }
+            } else {
+                subjects = defaultSubjects;
+                saveData();
+            }
+        }
+
+        // حفظ مباشر في ذاكرة الجهاز المحلية
+        function saveData() {
+            localStorage.setItem("my_study_planner_data_v2", JSON.stringify(subjects));
         }
 
         function renderSubjects() {
@@ -403,7 +415,7 @@
                     </div>
                     <div class="date-picker-group">
                         <label>تاريخ الامتحان / المراجعة:</label>
-                        <input type="date" class="custom-date-input" value="${subject.date || ''}" onchange="updateSubjectDate(${subject.id}, this.value)">
+                        <input type="date" class="date-input-fix" value="${subject.date || ''}" onchange="updateSubjectDate(${subject.id}, this.value)" oninput="updateSubjectDate(${subject.id}, this.value)">
                     </div>
                 `;
                 grid.appendChild(card);
@@ -414,7 +426,7 @@
             const sub = subjects.find(s => s.id === id);
             if (sub) {
                 sub.date = newDate;
-                saveSubjects(); // حفظ مباشر ومضمون في localStorage
+                saveData(); // حفظ البيانات لحظياً
             }
         }
 
@@ -434,7 +446,7 @@
             if (name) {
                 const newSubject = { id: Date.now(), name: name, date: "" };
                 subjects.push(newSubject);
-                saveSubjects();
+                saveData();
                 renderSubjects();
                 closeAddSubjectModal();
             }
@@ -443,15 +455,15 @@
         function deleteSubject(id) {
             if (confirm("هل أنتِ متأكدة من حذف هذه المادة؟")) {
                 subjects = subjects.filter(s => s.id !== id);
-                saveSubjects();
+                saveData();
                 renderSubjects();
             }
         }
 
-        // الاستجابة الفورية لتغيير أرقام الدقائق أو الثواني
-        function handleInputChange() {
+        // المؤقت وتعديل الأرقام لحظياً
+        function handleTimerInputChange() {
             if (isRunning) {
-                pauseTimer(); // إيقاف العد تلقائياً إذا عدل المستخدم الرقم أثناء العمل
+                pauseTimer();
             }
             const m = parseInt(document.getElementById("inputMinutes").value) || 0;
             const s = parseInt(document.getElementById("inputSeconds").value) || 0;
@@ -469,11 +481,9 @@
         function startTimer() {
             if (isRunning) return;
 
-            // أخذ الأرقام المكتوبة حالياً في الخانات
             const m = parseInt(document.getElementById("inputMinutes").value) || 0;
             const s = parseInt(document.getElementById("inputSeconds").value) || 0;
-            
-            // تحديث القيمة إذا كان المؤقت متوقفاً أو انتهى
+
             if (totalSeconds <= 0 || !timerInterval) {
                 totalSeconds = (m * 60) + s;
             }
@@ -504,10 +514,7 @@
 
         function resetTimer() {
             pauseTimer();
-            const m = parseInt(document.getElementById("inputMinutes").value) || 0;
-            const s = parseInt(document.getElementById("inputSeconds").value) || 0;
-            totalSeconds = (m * 60) + s;
-            updateTimerDisplay();
+            handleTimerInputChange();
             document.getElementById("congratsBox").style.display = "none";
         }
 
